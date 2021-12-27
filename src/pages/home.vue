@@ -2,11 +2,37 @@
   <div>
     <f7-page>
       <tabbar :activeRoute="f7route.path" />
-      <f7-photo-browser
+      <!-- <f7-photo-browser
         :photos="photo"
+        :toolbar="false"
         ref="standalone"
         :routable-modals="false"
-      ></f7-photo-browser>
+      >
+      <f7-link slot="right" popup-close>
+        <f7-chip slot="left" class="no-padding-right">
+          <f7-icon slot="media" f7="multiply"></f7-icon>
+        </f7-chip>
+      </f7-link>
+      </f7-photo-browser> -->
+
+      <f7-popup
+        class="flash-banner"
+        :opened="popupOpened"
+        @popup:closed="popupOpened = false"
+        backdrop
+        no-navbar
+        close-by-backdrop-click
+        :tablet-fullscreen="false"
+      >
+        <f7-block class="text-align-center banner-wrapper">
+        <f7-link popup-close class="close-banner">
+          <f7-chip outline class="no-padding-right" media-bg-color="primary"  >
+            <f7-icon slot="media" f7="multiply"></f7-icon>
+          </f7-chip>
+        </f7-link>
+          <img :src="photo" alt="" />
+        </f7-block>
+      </f7-popup>
       <!-- Page content-->
       <f7-swiper pagination :speed="500">
         <f7-swiper-slide v-for="slide in slider" :key="slide.id">
@@ -97,7 +123,6 @@
         :closeProduct="closeProduct()"
       >
       </product-sheet> -->
-      
     </f7-page>
   </div>
 </template>
@@ -108,9 +133,9 @@ import productSheet from "../components/productSheet.vue";
 import Timer from "../components/timer.vue";
 import Digit from "../components/digit.vue";
 import { f7 } from "framework7-vue";
-import tabbar from '../components/Tabbar.vue'
-import countdown from 'vue-awesome-countdown'
-import timer from "countdown"
+import tabbar from "../components/Tabbar.vue";
+import countdown from "vue-awesome-countdown";
+import timer from "countdown";
 
 // import { useTimer } from "vue-timer-hook";
 export default {
@@ -119,8 +144,9 @@ export default {
     f7route: Object,
     f7router: Object,
   },
-  data () {
+  data() {
     return {
+      popupOpened: false,
       showPreloader: true,
       slider: [],
       voucher: [],
@@ -130,23 +156,21 @@ export default {
       isProductOpened: false,
       productDetail: {},
       timer: null,
-      activeRoute: '',
-      photo: ['https://placekitten.com/800/800']
-
+      activeRoute: "",
+      photo: "https://static.disqonin.com/uploads/img/8-2021/1630370794869-promo-kopi-kenangan-promo-kenangan-hanya-rp-.jpg",
     };
   },
   methods: {
-    loadSlider () {
+    loadSlider() {
       this.axios
         .get(`slider`)
         .then((res) => {
           this.slider = res.data.content.result;
           // this.$refs.standalone.open()
-
         })
-        .catch((err) => { });
+        .catch((err) => {});
     },
-    loadVoucher () {
+    loadVoucher() {
       this.axios
         .post(`vdiscount`, {
           limit: "10",
@@ -155,9 +179,9 @@ export default {
         .then((res) => {
           this.voucher = res.data.content.result;
         })
-        .catch((err) => { });
+        .catch((err) => {});
     },
-    loadProduct () {
+    loadProduct() {
       let data = {
         limit: limit,
         offset: this.productOffset,
@@ -181,7 +205,7 @@ export default {
           this.showPreloader = false;
         });
     },
-    loadProductDetail (id) {
+    loadProductDetail(id) {
       f7.preloader.show();
       this.axios
         .get(`product/get/${id}`)
@@ -195,19 +219,40 @@ export default {
           f7.preloader.hide();
         });
     },
-    closeProduct () {
+    closeProduct() {
       this.productDetail = {};
       this.isProductOpened = false;
     },
   },
-  mounted () {
+  mounted() {
     this.loadSlider();
     this.loadProduct();
     this.loadVoucher();
     var time = new Date();
     time.setSeconds(time.getSeconds() + 600); // 10 minutes timer
-    this.timer = timer(time);
-    console.log(this.timer)
+    this.timer = timer(new Date(), time);
+    console.log(this.timer);
+    this.popupOpened = true;
   },
 };
 </script>
+<style>
+.flash-banner {
+  background: none;
+}
+.flash-banner .banner-wrapper{
+  margin-top: 25vh;
+  position: relative;
+}
+.flash-banner img {
+  width: 300px;
+  margin: 0 auto;
+}
+.flash-banner .close-banner{
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: 270px;
+  float: right;
+}
+</style>

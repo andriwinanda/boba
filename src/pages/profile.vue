@@ -2,7 +2,9 @@
   <div>
     <f7-page name="profile">
       <tabbar :activeRoute="f7route.path" />
-      <f7-navbar title="Profile" back-link></f7-navbar>
+      <f7-navbar title="Profile" back-link>
+        <f7-nav-right :inner="false"></f7-nav-right>
+      </f7-navbar>
       <f7-block v-if="!user" class="align-items-center center-wrapper">
         <div style="margin: 0 auto">
           <p class="text-align-center text-color-gray">

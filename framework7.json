@@ -3,7 +3,7 @@
   "type": [
     "pwa"
   ],
-  "name": "Dswip POS",
+  "name": "GeelaBoba",
   "framework": "vue",
   "template": "split-view",
   "bundler": "webpack",
