@@ -1,7 +1,7 @@
 <template>
   <f7-sheet
     :opened="isOpened"
-    @sheet:closed="closeProduct"
+    @sheet:closed="$emit('closeProduct')"
     swipe-to-close
     tablet-fullscreen
     backdrop
@@ -16,13 +16,13 @@
         <p>
           Rp
           {{
-            fomatNumeric(
+            formatNumeric(
               product.price - product.price * (product.itemDiscount || 0)
             )
           }}
         </p>
         <p class="no-margin-vertical" v-if="product.itemDiscount">
-          <del>Rp {{ fomatNumeric(product.price) }}</del> •
+          <del>Rp {{ formatNumeric(product.price) }}</del> •
           <span class="text-color-red"
             >{{ product.itemDiscount * 100 }}% OFF</span
           >
@@ -39,9 +39,9 @@
 import { numeric } from "../js/function-helper";
 
 export default {
-  props: ["isOpened", "product", "closeProduct"],
+  props: ["isOpened", "product"],
   methods: {
-    fomatNumeric(val) {
+    formatNumeric(val) {
       return numeric(val);
     },
   },

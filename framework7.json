@@ -21,7 +21,7 @@
     "darkTheme": true,
     "lightTheme": true,
     "themes": [
-      "ios"
+      "md"
     ],
     "components": [
       "appbar",

@@ -15,7 +15,7 @@
         name="password"
         placeholder="Password"
         :value="password"
-        @keypress.enter.prevent="login()"
+        @keypress.native.enter.prevent="login()"
         @input="password = $event.target.value"
       ></f7-list-input>
     </f7-list>

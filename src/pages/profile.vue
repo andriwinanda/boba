@@ -1,10 +1,9 @@
 <template>
-  <div>
     <f7-page name="profile">
       <tabbar :activeRoute="f7route.path" />
-      <f7-navbar title="Profile" back-link>
+      <!-- <f7-navbar title="Profile">
         <f7-nav-right :inner="false"></f7-nav-right>
-      </f7-navbar>
+      </f7-navbar> -->
       <f7-block v-if="!user" class="align-items-center center-wrapper">
         <div style="margin: 0 auto">
           <p class="text-align-center text-color-gray">
@@ -23,7 +22,7 @@
             ><small>Edit Profile</small></f7-link
           >
         </f7-block>
-        <f7-card @click="f7router.navigate('/voucher/')">
+        <f7-card @click.native="$f7router.navigate('/voucher')">
           <f7-card-content>
             <f7-row class="align-items-center">
               <f7-col width="20">
@@ -42,7 +41,7 @@
           </f7-card-content>
         </f7-card>
         <f7-list class="no-hairlines">
-          <f7-list-item title="Notification" link="/notification/">
+          <f7-list-item title="Notification" link="/notification">
             <template #media>
               <f7-icon class="text-color-gray" f7="bell_fill"></f7-icon>
             </template>
@@ -155,7 +154,6 @@
         </f7-popup>
       </template>
     </f7-page>
-  </div>
 </template>
 <script>
 import { mapState } from "vuex";

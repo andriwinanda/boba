@@ -1,9 +1,8 @@
 <template>
-  <div>
+ 
     <f7-page name="voucher">
       <f7-navbar title="Notification" back-link></f7-navbar>
-
-      <f7-card @click="detailNotif()">
+      <f7-card @click.native="detailNotif()">
         <f7-card-content>
           <h3 class="no-margin">
             <strong class="text-color-primary">Dapatkan Promo Terbaik </strong>
@@ -41,7 +40,6 @@
         </f7-page>
       </f7-popup>
     </f7-page>
-  </div>
 </template>
 <script>
 export default {

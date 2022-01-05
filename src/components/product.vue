@@ -6,10 +6,10 @@
         <b class="product-title">{{ title }}</b>
       </p>
       <p>
-        Rp {{ fomatNumeric(itemPrice - itemPrice * (itemDiscount || 0)) }}
+        Rp {{ formatNumeric(itemPrice - itemPrice * (itemDiscount || 0)) }}
       </p>
       <p class="no-margin-vertical" v-if="itemDiscount">
-        <del>Rp {{ fomatNumeric(itemPrice) }}</del> •
+        <del>Rp {{ formatNumeric(itemPrice) }}</del> •
         <span class="text-color-red">{{ itemDiscount * 100 }}% OFF</span>
       </p>
     </f7-card-content>
@@ -20,7 +20,7 @@ import { numeric } from "../js/function-helper";
 export default {
   props: ["title", "image", "itemPrice", "itemDiscount", "priceAfterDiscount"],
   methods: {
-    fomatNumeric(val) {
+    formatNumeric(val) {
       return numeric(val);
     },
   },

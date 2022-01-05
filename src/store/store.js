@@ -23,7 +23,6 @@ const actions = {
     state.isLoggedIn = false
     removeToken()
     removeDataUser()
-    delete axios.defaults.headers['X-Auth-Token']
   },
 }
 

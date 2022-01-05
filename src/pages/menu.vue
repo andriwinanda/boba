@@ -36,7 +36,9 @@
           ></f7-link>
         </f7-nav-right>
         <f7-searchbar
+          disable-button-text="Cancel"
           :expandable="true"
+          v-model="search"
           class="searchbar-menu"
           @input="
             search = $event.target.value;
@@ -47,15 +49,16 @@
           search-in=".item-title"
         ></f7-searchbar>
       </f7-navbar>
+      
       <!-- Product -->
-      <div v-for="(products, i) in productList" :key="i">
-        <template v-if="products">
+      <template v-if="!showPreloader">
+        <div v-for="(product, key) in productList" :key="key">
           <f7-block-title class="is-capitalized">
-            {{ products[0].category }}
+            {{ key }}
           </f7-block-title>
           <f7-block>
             <f7-row>
-              <f7-col width="50" v-for="item in products" :key="item.id">
+              <f7-col width="50" v-for="item in product" :key="item.id">
                 <product
                   @click.native="loadProductDetail(item.id)"
                   :title="item.name"
@@ -66,16 +69,15 @@
               </f7-col>
             </f7-row>
           </f7-block>
-        </template>
-      </div>
+        </div>
+      </template>
 
       <!-- PRODUCT DETAL -->
       <product-sheet
         :isOpened="isProductOpened"
-        :closeProduct="isProductOpened = false"
         :product="productDetail"
-      >
-      </product-sheet>
+        @closeProduct="closeProduct()"
+      />
       <!-- Drop Point -->
       <f7-sheet
         swipe-to-close
@@ -128,11 +130,12 @@ export default {
   data () {
     return {
       showPreloader: true,
-      productList: [],
+      productList: {},
       productOffset: 0,
       productRecord: 0,
       isProductOpened: false,
       productDetail: {},
+      category: [],
       search: "",
       dropPoint: [],
       dropPointSelected: {},
@@ -140,13 +143,13 @@ export default {
     };
   },
   methods: {
-    loadProduct (category, recommend) {
-      console.log(category)
+    async loadProduct (category, recommend) {
       let dataReq = {
         // limit: limit,
         offset: this.productOffset,
       };
-      this.showPreloader = true;
+      this.showPreloader = true
+      f7.preloader.show();;
       if (category) {
         dataReq.category = category;
       }
@@ -161,45 +164,32 @@ export default {
       ajax
         .then((res) => {
           let data = res.data.content;
-          if (data.record) {
-            this.productList[category] = [];
-            data.result.map((el) => {
-              this.productList[category].push(el);
-            });
-            console.log(this.productList)
-          }
+          data.result.map((el) => {
+            if (!this.productList[el.category]) this.productList[el.category] = []
+            this.productList[el.category].push(el)
+          })
+
           this.productRecord = data.record;
-          this.showPreloader = false;
+          f7.preloader.hide();
+          this.showPreloader = false
+
         })
         .catch((err) => {
-          this.showPreloader = false;
+          f7.preloader.hide();
+          this.showPreloader = false
+
         });
-      // this.axios
-      //   .post(`product`, data)
-      //   .then((res) => {
-      //     this.showPreloader = false;
-      //     let productItem = res.data.content;
-      //     if (productItem.result) {
-      //       productItem.result.map((el) => {
-      //         this.productList.push(el);
-      //       });
-      //     } else this.productList = [];
-      //     this.productRecord = productItem.record;
-      //   })
-      //   .catch((err) => {
-      //     this.showPreloader = false;
-      //   });
     },
     searchProduct: debounce(function (event) {
-      this.productList = [];
+      this.productList = {};
       this.productOffset = 0;
       this.productRecord = 0;
       this.loadProduct();
     }, 500),
-    loadMoreProduct () {
+    async loadMoreProduct () {
       if (!this.showPreloader && this.productList.length < this.productRecord) {
         this.productOffset += limit;
-        this.loadProduct();
+        await this.loadProduct();
       }
     },
     loadProductDetail (id) {
@@ -224,6 +214,7 @@ export default {
         .get(`category`)
         .then((res) => {
           res.data.content.result.map((el) => {
+            this.category.push(el.id)
             this.loadProduct(el.id, 0);
           });
         })
@@ -248,8 +239,8 @@ export default {
 
   },
   created () {
-    this.loadCategory();
     this.loadDropPoint();
+    this.loadProduct();
   },
 };
 </script>

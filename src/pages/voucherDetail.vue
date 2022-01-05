@@ -1,8 +1,7 @@
 <template>
-  <div>
     <f7-page name="voucher">
       <f7-navbar title="Voucher Detail" back-link></f7-navbar>
-
+      
       <f7-toolbar position="bottom">
         <f7-block style="width: 100%" padding>
           <f7-button
@@ -15,8 +14,8 @@
       </f7-toolbar>
       <f7-card class="bg-color-primary">
         <f7-card-content text-color="white">
-          <h2 class="no-margin">Diskon {{ voucher.percentage }} {{f7route.route.path}}</h2>
-          <small> Minimal Order Rp {{ fomatNumeric(voucher.minimum) }}</small>
+          <h2 class="no-margin">Diskon {{ voucher.percentage }}</h2>
+          <small> Minimal Order Rp {{ formatNumeric(voucher.minimum) }}</small>
           <br />
           <small>Berlaku sampai dengan {{ voucher.period }}</small>
         </f7-card-content>
@@ -36,7 +35,6 @@
         </p>
       </f7-block>
     </f7-page>
-  </div>
 </template>
 <script>
 import { f7 } from "framework7-vue";
@@ -53,7 +51,7 @@ export default {
     };
   },
   methods: {
-    fomatNumeric(val) {
+    formatNumeric(val) {
       return numeric(val);
     },
     loadVoucherDetail(id) {
