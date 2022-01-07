@@ -1,6 +1,7 @@
 <template>
   <f7-toolbar tabbar labels bottom>
     <f7-link
+    v-if="item.link != '/voucher' || user"
       v-for="(item, i) in menu"
       :key="i"
       tab-link
@@ -13,6 +14,7 @@
   </f7-toolbar>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   props: {
     f7route: Object,
@@ -46,5 +48,10 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.dataUser,
+    }),
+  }
 };
 </script>

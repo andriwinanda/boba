@@ -16,7 +16,7 @@
             <f7-icon slot="media" f7="multiply"></f7-icon>
           </f7-chip>
         </f7-link>
-        <img :src="photo" alt="" />
+        <img :src="splash" alt="" />
       </f7-block>
     </f7-popup>
 
@@ -127,6 +127,7 @@ export default {
       popupOpened: false,
       showPreloader: true,
       slider: [],
+      splash: "",
       voucher: [],
       productList: [],
       productOffset: 0,
@@ -135,7 +136,6 @@ export default {
       productDetail: {},
       timer: null,
       activeRoute: "",
-      photo: "https://static.disqonin.com/uploads/img/8-2021/1630370794869-promo-kopi-kenangan-promo-kenangan-hanya-rp-.jpg",
     };
   },
   methods: {
@@ -145,6 +145,15 @@ export default {
         .then((res) => {
           this.slider = res.data.content.result;
           // this.$refs.standalone.open()
+        })
+        .catch((err) => { });
+    },
+    loadSplash () {
+      this.axios
+        .get(`slider/splash`)
+        .then((res) => {
+          this.splash = res.data.content.result[0].image;
+          this.popupOpened = true;
         })
         .catch((err) => { });
     },
@@ -207,6 +216,7 @@ export default {
   },
   mounted () {
     this.loadSlider();
+    this.loadSplash()
     this.loadProduct();
     this.loadVoucher();
     var time = new Date();
@@ -216,7 +226,6 @@ export default {
         this.timer = ts
       },
     );
-    this.popupOpened = true;
   },
 };
 </script>
