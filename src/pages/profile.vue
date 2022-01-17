@@ -185,6 +185,7 @@ export default {
   methods: {
     logout () {
       store.dispatch("logout");
+      delete this.axios.defaults.headers.common["X-Auth-Token"];
     },
     updateProfile () {
       let dataUpdate = {

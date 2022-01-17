@@ -31,6 +31,22 @@
           <strong>Description</strong> <br />
           {{ product.description || "-" }}
         </p>
+        <f7-row>
+          <f7-col>
+            <f7-stepper
+              :min="1"
+              @stepper:change="qty = $event"
+              :value="qty"
+              raised
+              large
+            ></f7-stepper>
+          </f7-col>
+          <f7-col>
+            <f7-button large fill @click="addToBag(product)"
+              >Add To Bag</f7-button
+            >
+          </f7-col>
+        </f7-row>
       </f7-block>
     </f7-page-content>
   </f7-sheet>
@@ -40,9 +56,30 @@ import { numeric } from "../js/function-helper";
 
 export default {
   props: ["isOpened", "product"],
+  data () {
+    return {
+      qty: 1
+    }
+  },
   methods: {
-    formatNumeric(val) {
+    formatNumeric (val) {
       return numeric(val);
+    },
+    addToBag (product) {
+      let data = {
+        // id: product.item.id,
+        sku: product.sku,
+        name: product.name,
+        tax: product.tax || 0,
+        currency: product.currency,
+        min: product.min ? product.min : 1,
+        qty: parseInt(this.qty),
+        price: product.price,
+        totalPrice: product.price * product.qty,
+      };
+      this.$store.dispatch("addtobag", data);
+      this.beforeAddSheet = false;
+      this.qty = 1
     },
   },
 };

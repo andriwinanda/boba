@@ -7,32 +7,70 @@
         name="Name"
         placeholder="Name"
         :autofocus="true"
-        :value="tname"
-        @input="tname = $event.target.value"
+        :value="userData.tname"
+        @input="userData.tname = $event.target.value"
       ></f7-list-input>
       <f7-list-input
         type="email"
         name="Email"
         placeholder="Email"
         :autofocus="true"
-        :value="temail"
-        @input="temail = $event.target.value"
+        :value="userData.temail"
+        @input="userData.temail = $event.target.value"
       ></f7-list-input>
+
+      <f7-list-input
+        type="password"
+        name="password"
+        placeholder="Password"
+        :value="userData.tpassword"
+        @keypress.enter.prevent="login()"
+        @input="userData.tpassword = $event.target.value"
+      ></f7-list-input>
+
       <f7-list-input
         type="number"
         name="Phone Number"
         placeholder="Phone Number"
         :autofocus="true"
-        :value="tphone1"
-        @input="tphone1 = $event.target.value"
+        :value="userData.tphone1"
+        @input="userData.tphone1 = $event.target.value"
       ></f7-list-input>
+
       <f7-list-input
-        type="password"
-        name="password"
-        placeholder="Password"
-        :value="tpassword"
-        @keypress.enter.prevent="login()"
-        @input="tpassword = $event.target.value"
+        type="text"
+        name="Address"
+        placeholder="Address"
+        :autofocus="true"
+        :value="userData.taddress"
+        @input="userData.taddress = $event.target.value"
+      ></f7-list-input>
+
+      <f7-list-input
+        type="text"
+        name="Zip"
+        placeholder="Zip"
+        :autofocus="true"
+        :value="userData.tzip"
+        @input="userData.tzip = $event.target.value"
+      ></f7-list-input>
+
+      <f7-list-input
+        type="text"
+        name="City"
+        placeholder="City"
+        :autofocus="true"
+        :value="userData.ccity"
+        @input="userData.ccity = $event.target.value"
+      ></f7-list-input>
+
+      <f7-list-input
+        type="text"
+        name="District"
+        placeholder="District"
+        :autofocus="true"
+        :value="userData.cdistrict"
+        @input="userData.cdistrict = $event.target.value"
       ></f7-list-input>
     </f7-list>
     <f7-block>
@@ -48,21 +86,29 @@
 </template>
 <script>
 import { useStore } from "framework7-vue";
+import { urlEncoded } from "../js/function-helper";
 import { f7 } from "framework7-vue";
 export default {
   props: {
     f7route: Object,
     f7router: Object,
   },
-  data() {
+  data () {
     return {
-      tname: "",
-      temail: "",
-      tphone1: "08",
-      tpassword: "",
+      userData: {
+        tname: "",
+        temail: "",
+        tphone1: "08",
+        tpassword: "",
+
+        taddress: "",
+        tzip: '',
+        ccity: "",
+        cdistrict: "",
+      }
     };
   },
-  setup() {
+  setup () {
     // const login = () => {
     //   store.dispatch("addProduct", {
     //     id: "4",
@@ -76,16 +122,15 @@ export default {
     // };
   },
   methods: {
-    login() {
-      let userData = {
-        tname: this.tname,
-        temail: this.temail,
-        tphone1: this.tphone1,
-        tpassword: this.tpassword,
-      };
+    login () {
+      console.log(urlEncoded(this.userData))
       f7.dialog.preloader();
       this.axios
-        .post("/customer/add", userData)
+        .post("/customer/add", urlEncoded(this.userData), {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
         .then((res) => {
           f7.dialog.close();
           let token = res.data.content.token;
@@ -102,15 +147,12 @@ export default {
           };
           f7.toast
             .create({
-              text: "Login Success",
+              text: "Register Success, Please Login!!",
               position: "bottom",
               closeTimeout: 2000,
               destroyOnClose: true,
             })
             .open();
-          this.axios.defaults.headers.common["X-Auth-Token"] = token;
-          this.$store.dispatch("login", dataLogin);
-          this.f7router.navigate("/");
           // });
         })
         .catch((error) => {

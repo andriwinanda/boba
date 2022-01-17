@@ -11,13 +11,15 @@
         @input="username = $event.target.value"
       ></f7-list-input>
       <f7-list-input
-        type="password"
+        type="text"
         name="password"
         placeholder="Password"
         :value="password"
         @keypress.native.enter.prevent="login()"
         @input="password = $event.target.value"
-      ></f7-list-input>
+      >
+        <f7-icon f7="cart" slot="content-end"></f7-icon>
+      </f7-list-input>
     </f7-list>
     <f7-block>
       <p class="text-align-right text-color-gray">
@@ -103,7 +105,7 @@ export default {
     f7route: Object,
     f7router: Object,
   },
-  data() {
+  data () {
     return {
       username: "",
       password: "",
@@ -114,7 +116,7 @@ export default {
       isLoading: false,
     };
   },
-  setup() {
+  setup () {
     // const login = () => {
     //   store.dispatch("addProduct", {
     //     id: "4",
@@ -128,7 +130,7 @@ export default {
     // };
   },
   methods: {
-    login() {
+    login () {
       let userLogin = {
         username: this.username,
         password: this.password,
@@ -187,7 +189,7 @@ export default {
           }
         });
     },
-    sendOtp() {
+    sendOtp () {
       let username = {
         username: this.emailToReset,
       };
@@ -213,7 +215,7 @@ export default {
           });
       }
     },
-    resetPassword() {
+    resetPassword () {
       let resetData = {
         username: this.emailToReset,
         new_password: this.passwordToReset,
@@ -240,7 +242,7 @@ export default {
           });
       }
     },
-    resetForm() {
+    resetForm () {
       this.emailToReset = "";
       this.passwordToReset = "";
       this.otpToReset = "";

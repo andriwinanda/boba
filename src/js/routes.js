@@ -4,6 +4,8 @@ import Menu from '../pages/menu.vue';
 import Voucher from '../pages/voucher.vue';
 import VoucherDetail from '../pages/voucherDetail.vue';
 import Profile from '../pages/profile.vue';
+import Cart from '../pages/cart.vue';
+import Checkout from '../pages/checkout.vue';
 import Login from '../pages/login.vue';
 import Signup from '../pages/signup.vue';
 import Notification from '../pages/notification.vue';
@@ -25,6 +27,14 @@ var routes = [
   {
     path: '/voucher/:id',
     component: VoucherDetail
+  },
+  {
+    path: '/cart',
+    component: Cart
+  },
+  {
+    path: '/checkout',
+    component: Checkout
   },
   {
     path: '/profile',

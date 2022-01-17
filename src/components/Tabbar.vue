@@ -36,6 +36,11 @@ export default {
           active: true
         },
         {
+          title: "Cart",
+          icon: "cart",
+          link: "/cart",
+        },
+        {
           title: "Voucher",
           icon: "ticket",
           link: "/voucher",
